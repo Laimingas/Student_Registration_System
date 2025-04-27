@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.student_registration_system.controller.GroupController">
+    <children>
+        <GridPane hgap="10" vgap="10">
+            <Label text="Group Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="groupNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Button text="Add Group" onAction="#handleAddGroup" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Button text="Delete Group" onAction="#handleDeleteGroup" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Select Group:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <ComboBox fx:id="groupPicker" onAction="#handleGroupSelection" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Label text="Select Student ID:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <ComboBox fx:id="studentIdPicker" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+            <Button text="Add Student to Group" onAction="#handleAddStudentToGroup" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        </GridPane>
+
+        <TableView fx:id="studentTable">
+            <columns>
+                <TableColumn fx:id="studentIdColumn" text="Student ID" prefWidth="200"/>
+            </columns>
+        </TableView>
+
+        <Button text="Back to Main" onAction="#handleBackToMain"/>
+    </children>
+</VBox>

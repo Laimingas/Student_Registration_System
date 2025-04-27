@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.student_registration_system.controller.StudentController">
+    <children>
+        <GridPane hgap="10" vgap="10">
+            <Label text="Student ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="studentIdField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Button text="Add Student" onAction="#handleAddStudent" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Button text="Import from CSV/Excel" onAction="#handleImport" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+            <Label text="Delete Student ID:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <TextField fx:id="deleteStudentIdField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Button text="Delete Student" onAction="#handleDeleteStudent" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+        </GridPane>
+
+        <TableView fx:id="studentTable">
+            <columns>
+                <TableColumn fx:id="studentIdColumn" text="Student ID" prefWidth="100"/>
+                <TableColumn fx:id="nameColumn" text="Name" prefWidth="200"/>
+                <TableColumn fx:id="emailColumn" text="Email" prefWidth="300"/>
+            </columns>
+        </TableView>
+
+        <Button text="Back to Main" onAction="#handleBackToMain"/>
+    </children>
+</VBox>
