@@ -3,10 +3,7 @@ package com.example.student_registration_system.controller;
 import com.example.student_registration_system.model.AttendanceRecord;
 import com.example.student_registration_system.model.Group;
 import com.example.student_registration_system.model.Student;
-import com.example.student_registration_system.service.AttendanceService;
-import com.example.student_registration_system.service.AttendanceServiceImpl;
-import com.example.student_registration_system.service.GroupService;
-import com.example.student_registration_system.service.GroupServiceImpl;
+import com.example.student_registration_system.service.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -47,18 +44,24 @@ public class AttendanceController {
     private TableColumn<AttendanceRecord, String> studentIdColumn;
 
     private GroupService groupService = new GroupServiceImpl();
-    private AttendanceService attendanceService = new AttendanceServiceImpl();
+    private AttendanceService attendanceService = AttendanceServiceImpl.getInstance();
     private ObservableList<Group> groupData = FXCollections.observableArrayList();
     private ObservableList<Student> studentData = FXCollections.observableArrayList();
     private ObservableList<AttendanceRecord> attendanceData = FXCollections.observableArrayList();
+    private StudentService studentService = new StudentServiceImpl();
 
     @FXML
     private void initialize() {
-        // Populate group picker
-        groupPicker.setItems(groupData);
+        // Load group and attendance data
         loadGroupData();
+        loadAttendanceData();
 
-        // Populate student picker dynamically when a group is selected
+        // Add 'None' option to group picker
+        Group noneOption = new Group("None", null); // Assuming Group constructor accepts name and list of students
+        groupData.add(noneOption);
+        groupPicker.setItems(groupData);
+
+        // Event handler for group selection
         groupPicker.setOnAction(event -> handleGroupSelection());
 
         // Configure student picker to display student IDs properly
@@ -72,19 +75,19 @@ public class AttendanceController {
 
         // Configure table columns
         studentIdColumn.setCellValueFactory(new PropertyValueFactory<>("studentId"));
-
-        // Load attendance data on initialization
-        attendanceService.loadAttendanceData();
     }
 
     @FXML
     private void handleGroupSelection() {
         Group selectedGroup = groupPicker.getSelectionModel().getSelectedItem();
-        if (selectedGroup != null) {
+        if (selectedGroup != null && "None".equals(selectedGroup.getName())) {
+            // Populate the student picker with all students from all groups
+            studentData.setAll(studentService.getAllStudents());
+        } else if (selectedGroup != null) {
             // Populate the student picker with students from the selected group
             studentData.setAll(selectedGroup.getStudents());
-            studentPicker.setItems(studentData);
         }
+        studentPicker.setItems(studentData);
     }
 
     @FXML
@@ -176,7 +179,15 @@ public class AttendanceController {
 
     @FXML
     private void handleBackToMain() {
+        // Save attendance data before backing out
+        attendanceService.saveAttendanceData();
         switchScene("MainView.fxml");
+    }
+
+
+    private void loadAttendanceData() {
+        attendanceService.loadAttendanceData(); // Ensure data is reloaded from file
+        attendanceData.setAll(attendanceService.getAllAttendanceRecords());
     }
 
     private void switchScene(String fxmlFile) {

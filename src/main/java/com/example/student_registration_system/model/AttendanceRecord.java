@@ -9,32 +9,59 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AttendanceRecord implements Serializable {
-    private final StringProperty studentId;
-    private final Map<LocalDate, StringProperty> attendanceMap;
-    private LocalDate date; // Ensure this is a LocalDate
+    private String studentId; // Replace StringProperty with standard String
+    private Map<LocalDate, String> attendanceMap; // Use String instead of StringProperty
+    private LocalDate date; // Keep LocalDate as is
+    private boolean present;
+
+    // Transient properties for JavaFX bindings (not serialized)
+    private transient StringProperty studentIdProperty;
+    private transient Map<LocalDate, StringProperty> transientAttendanceMap;
 
     public AttendanceRecord(String studentId) {
-        this.studentId = new SimpleStringProperty(studentId);
+        this.studentId = studentId;
         this.attendanceMap = new HashMap<>();
+        initTransientFields();
     }
 
     public AttendanceRecord(String studentId, LocalDate date, boolean present) {
-        this.studentId = new SimpleStringProperty(studentId);
+        this.studentId = studentId;
         this.attendanceMap = new HashMap<>();
         this.date = date;
+        this.present = present;
         setAttendance(date, present ? "X" : "");
+        initTransientFields();
+    }
+
+    // Initialize transient fields for JavaFX bindings
+    private void initTransientFields() {
+        this.studentIdProperty = new SimpleStringProperty(studentId);
+        this.transientAttendanceMap = new HashMap<>();
+        for (Map.Entry<LocalDate, String> entry : attendanceMap.entrySet()) {
+            transientAttendanceMap.put(entry.getKey(), new SimpleStringProperty(entry.getValue()));
+        }
     }
 
     public String getStudentId() {
-        return studentId.get();
-    }
-
-    public StringProperty studentIdProperty() {
         return studentId;
     }
 
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+        if (studentIdProperty != null) {
+            studentIdProperty.set(studentId);
+        }
+    }
+
+    public StringProperty studentIdProperty() {
+        if (studentIdProperty == null) {
+            studentIdProperty = new SimpleStringProperty(studentId);
+        }
+        return studentIdProperty;
+    }
+
     public LocalDate getDate() {
-        return date; // Ensure this returns LocalDate
+        return date;
     }
 
     public void setDate(LocalDate date) {
@@ -42,15 +69,35 @@ public class AttendanceRecord implements Serializable {
     }
 
     public String getAttendance(LocalDate date) {
-        return attendanceMap.getOrDefault(date, new SimpleStringProperty("")).get();
+        return attendanceMap.getOrDefault(date, "");
     }
 
     public void setAttendance(LocalDate date, String attendance) {
-        attendanceMap.computeIfAbsent(date, k -> new SimpleStringProperty()).set(attendance);
+        attendanceMap.put(date, attendance);
+        if (transientAttendanceMap != null) {
+            transientAttendanceMap.computeIfAbsent(date, k -> new SimpleStringProperty()).set(attendance);
+        }
     }
 
     public StringProperty attendanceProperty(LocalDate date) {
-        return attendanceMap.computeIfAbsent(date, k -> new SimpleStringProperty());
+        if (transientAttendanceMap == null) {
+            transientAttendanceMap = new HashMap<>();
+        }
+        return transientAttendanceMap.computeIfAbsent(date, k -> new SimpleStringProperty(getAttendance(date)));
+    }
+
+    public void setPresent(boolean present) {
+        this.present = present;
+    }
+
+    public boolean isPresent() {
+        return present;
+    }
+
+    // Restore transient fields after deserialization
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject(); // Default deserialization
+        initTransientFields(); // Reinitialize transient fields
     }
 }
 

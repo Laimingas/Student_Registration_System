@@ -109,6 +109,7 @@ public class StudentController {
         deleteStudentIdField.clear();
     }
 
+    /*
     @FXML
     private void handleImport() {
         FileChooser fileChooser = new FileChooser();
@@ -122,6 +123,57 @@ public class StudentController {
             loadStudentData();
         }
     }
+    */
+    @FXML
+    private void handleImportCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            studentService.importStudentsFromCSV(file);
+            loadStudentData();
+        }
+    }
+
+    @FXML
+    private void handleExportCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File file = fileChooser.showSaveDialog(new Stage());
+        if (file != null) {
+            studentService.exportStudentsToCSV(file);
+        }
+    }
+
+    @FXML
+    private void handleImportExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx")
+        );
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            studentService.importStudentsFromExcel(file);
+            loadStudentData();
+        }
+    }
+
+    @FXML
+    private void handleExportExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Excel Files", "*.xlsx")
+        );
+        File file = fileChooser.showSaveDialog(new Stage());
+        if (file != null) {
+            studentService.exportStudentsToExcel(file);
+        }
+    }
+
 
     @FXML
     private void handleBackToMain() {

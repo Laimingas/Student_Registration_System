@@ -20,5 +20,9 @@ public interface StudentService {
     void importStudentsFromCSV(File file);
 
     void importStudentsFromExcel(File file);
+
+    void exportStudentsToCSV(File file);
+
+    void exportStudentsToExcel(File file);
 }
 

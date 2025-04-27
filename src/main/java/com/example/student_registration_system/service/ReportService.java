@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ReportService {
     List<Student> getStudentsWithAttendance(LocalDate startDate, LocalDate endDate);
-    void saveReportAsPDF(List<Student> students, List<AttendanceRecord> attendanceRecords, String filePath);
+    void saveReportAsPDF(List<Student> students, List<AttendanceRecord> attendanceRecords, String filePath, String groupName, List<LocalDate> dates);
     List<AttendanceRecord> getAttendanceRecords(LocalDate startDate, LocalDate endDate);
+    public List<AttendanceRecord> getAttendanceRecordsByGroup(String groupId, LocalDate startDate, LocalDate endDate);
 }

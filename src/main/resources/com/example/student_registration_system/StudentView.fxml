@@ -21,11 +21,14 @@
             <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
             <Button text="Add Student" onAction="#handleAddStudent" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <Button text="Import from CSV/Excel" onAction="#handleImport" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Button text="Import CSV" onAction="#handleImportCSV" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Button text="Export CSV" onAction="#handleExportCSV" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+            <Button text="Import Excel" onAction="#handleImportExcel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Button text="Export Excel" onAction="#handleExportExcel" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
 
-            <Label text="Delete Student ID:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="deleteStudentIdField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-            <Button text="Delete Student" onAction="#handleDeleteStudent" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+            <Label text="Delete Student ID:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <TextField fx:id="deleteStudentIdField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <Button text="Delete Student" onAction="#handleDeleteStudent" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
         </GridPane>
 
         <TableView fx:id="studentTable">

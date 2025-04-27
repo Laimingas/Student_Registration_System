@@ -53,4 +53,13 @@ public class GroupServiceImpl implements GroupService {
             }
         }
     }
+
+    @Override
+    public List<Student> getStudentsInGroup(String groupId) {
+        Group group = getGroupById(groupId);
+        if (group != null) {
+            return group.getStudents(); // Return the list of students in the group
+        }
+        return new ArrayList<>(); // Return an empty list if the group is not found
+    }
 }

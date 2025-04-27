@@ -13,6 +13,7 @@ public interface AttendanceService {
     void saveAttendanceData();
     void loadAttendanceData();
     List<AttendanceRecord> getAllAttendanceRecords();
+    public List<LocalDate> getDatesInRange(List<AttendanceRecord> attendanceRecords, LocalDate startDate, LocalDate endDate);
 }
 
 
